@@ -1,9 +1,19 @@
 spring:
+  devtools:
+    livereload:
+      enabled: true
+    freemarker:
+      cache: false
+    thymeleaf:
+      cache: false
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/board?useUnicode=true&serverTimezone=UTC&characterEncoding=UTF-8
     username: root
     password: ansgmldnd91!
+
+
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect

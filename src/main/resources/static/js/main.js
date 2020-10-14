@@ -1,285 +1,258 @@
-(function ($)
-  { "use strict"
-  
+/*
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+*/
 
-/* 1. Proloder */
-    $(window).on('load', function () {
-      $('#preloader-active').delay(450).fadeOut('slow');
-      $('body').delay(450).css({
-        'overflow': 'visible'
-      });
-    });
+(function($) {
 
-/* 2. sticky And Scroll UP */
-    $(window).on('scroll', function () {
-      var scroll = $(window).scrollTop();
-      if (scroll < 400) {
-        $(".header-sticky").removeClass("sticky-bar");
-        $('#back-top').fadeOut(500);
-      } else {
-        $(".header-sticky").addClass("sticky-bar");
-        $('#back-top').fadeIn(500);
-      }
-    });
+	var	$window = $(window),
+		$body = $('body'),
+		$wrapper = $('#wrapper'),
+		$header = $('#header'),
+		$nav = $('#nav'),
+		$main = $('#main'),
+		$navPanelToggle, $navPanel, $navPanelInner;
 
-  // Scroll Up
-    $('#back-top a').on("click", function () {
-      $('body,html').animate({
-        scrollTop: 0
-      }, 800);
-      return false;
-    });
-  
+	// Breakpoints.
+		breakpoints({
+			default:   ['1681px',   null       ],
+			xlarge:    ['1281px',   '1680px'   ],
+			large:     ['981px',    '1280px'   ],
+			medium:    ['737px',    '980px'    ],
+			small:     ['481px',    '736px'    ],
+			xsmall:    ['361px',    '480px'    ],
+			xxsmall:   [null,       '360px'    ]
+		});
 
-/* 3. slick Nav */
-// mobile_menu
-    var menu = $('ul#navigation');
-    if(menu.length){
-      menu.slicknav({
-        prependTo: ".mobile_menu",
-        closedSymbol: '+',
-        openedSymbol:'-'
-      });
-    };
+	/**
+	 * Applies parallax scrolling to an element's background image.
+	 * @return {jQuery} jQuery object.
+	 */
+	$.fn._parallax = function(intensity) {
 
-/* 4. MainSlider-1 */
-    // h1-hero-active
-    function mainSlider() {
-      var BasicSlider = $('.slider-active');
-      BasicSlider.on('init', function (e, slick) {
-        var $firstAnimatingElements = $('.single-slider:first-child').find('[data-animation]');
-        doAnimations($firstAnimatingElements);
-      });
-      BasicSlider.on('beforeChange', function (e, slick, currentSlide, nextSlide) {
-        var $animatingElements = $('.single-slider[data-slick-index="' + nextSlide + '"]').find('[data-animation]');
-        doAnimations($animatingElements);
-      });
-      BasicSlider.slick({
-        autoplay: true,
-        autoplaySpeed: 8000,
-        dots: false,
-        fade: true,
-        arrows: false, 
-        prevArrow: '<button type="button" class="slick-prev"><i class="ti-angle-left"></i></button>',
-        nextArrow: '<button type="button" class="slick-next"><i class="ti-angle-right"></i></button>',
-        responsive: [{
-            breakpoint: 1024,
-            settings: {
-              slidesToShow: 1,
-              slidesToScroll: 1,
-              infinite: true,
-            }
-          },
-          {
-            breakpoint: 991,
-            settings: {
-              slidesToShow: 1,
-              slidesToScroll: 1,
-              arrows: false
-            }
-          },
-          {
-            breakpoint: 767,
-            settings: {
-              slidesToShow: 1,
-              slidesToScroll: 1,
-              arrows: false,
-              dots:false
-            }
-          }
-        ]
-      });
+		var	$window = $(window),
+			$this = $(this);
 
-      function doAnimations(elements) {
-        var animationEndEvents = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
-        elements.each(function () {
-          var $this = $(this);
-          var $animationDelay = $this.data('delay');
-          var $animationType = 'animated ' + $this.data('animation');
-          $this.css({
-            'animation-delay': $animationDelay,
-            '-webkit-animation-delay': $animationDelay
-          });
-          $this.addClass($animationType).one(animationEndEvents, function () {
-            $this.removeClass($animationType);
-          });
-        });
-      }
-    }
-    mainSlider();
+		if (this.length == 0 || intensity === 0)
+			return $this;
 
-    $('.owl-carousel').owlCarousel({
-      autoplay: true,
-      center: true,
-      loop: true,
-      nav: true,
-      items:1
-    });
+		if (this.length > 1) {
 
-    
-/* 4. Testimonial Active*/
-var testimonial = $('.h1-testimonial-active');
-if(testimonial.length){
-testimonial.slick({
-    dots: true,
-    infinite: true,
-    speed: 1000,
-    autoplay:true,
-    loop:true,
-    arrows: true,
-    prevArrow: '<button type="button" class="slick-prev"><i class="ti-arrow-top-left"></i></button>',
-    nextArrow: '<button type="button" class="slick-next"><i class="ti-arrow-top-right"></i></button>',
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          infinite: true,
-          dots: true,
-          arrows:true
-        }
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          arrows:true
-        }
-      },
-      {
-        breakpoint: 500,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          arrows: false,
-          dots:false
-        }
-      }
-    ]
-  });
-}
+			for (var i=0; i < this.length; i++)
+				$(this[i])._parallax(intensity);
 
+			return $this;
 
+		}
 
-// Single Img slder
-$('.services-active').slick({
-  dots: false,
-  infinite: true,
-  autoplay: true,
-  speed: 400,
-  arrows: true,
-  prevArrow: '<button type="button" class="slick-prev"><i class="ti-angle-left"></i></button>',
-  nextArrow: '<button type="button" class="slick-next"><i class="ti-angle-right"></i></button>',
-  slidesToShow: 3,
-  slidesToScroll: 1,
-  responsive: [
-    {
-      breakpoint: 1024,
-      settings: {
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        infinite: true,
-        dots: false,
-      }
-    },
-    {
-      breakpoint: 992,
-      settings: {
-        slidesToShow: 2,
-        slidesToScroll: 1,
-        infinite: true,
-        dots: false,
-      }
-    },
-    {
-      breakpoint: 768,
-      settings: {
-        slidesToShow: 2,
-        slidesToScroll: 1,
-        arrows: true
-      }
-    },
-    {
-      breakpoint: 480,
-      settings: {
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: false
-      }
-    },
-  ]
-});
+		if (!intensity)
+			intensity = 0.25;
 
+		$this.each(function() {
 
-/* 6. Nice Selectorp  */
-  var nice_Select = $('select');
-    if(nice_Select.length){
-      nice_Select.niceSelect();
-    }
+			var $t = $(this),
+				$bg = $('<div class="bg"></div>').appendTo($t),
+				on, off;
 
-/* 7. data-background */
-    $("[data-background]").each(function () {
-      $(this).css("background-image", "url(" + $(this).attr("data-background") + ")")
-      });
+			on = function() {
 
+				$bg
+					.removeClass('fixed')
+					.css('transform', 'matrix(1,0,0,1,0,0)');
 
-/* 10. WOW active */
-    new WOW().init();
+				$window
+					.on('scroll._parallax', function() {
 
-// 11. ---- Mailchimp js --------//  
-    function mailChimp() {
-      $('#mc_embed_signup').find('form').ajaxChimp();
-    }
-    mailChimp();
+						var pos = parseInt($window.scrollTop()) - parseInt($t.position().top);
 
+						$bg.css('transform', 'matrix(1,0,0,1,0,' + (pos * intensity) + ')');
 
-// 12 Pop Up Img
-    var popUp = $('.single_gallery_part, .img-pop-up');
-      if(popUp.length){
-        popUp.magnificPopup({
-          type: 'image',
-          gallery:{
-            enabled:true
-          }
-        });
-      }
-// 12 Pop Up Video
-    var popUp = $('.popup-video');
-    if(popUp.length){
-      popUp.magnificPopup({
-        type: 'iframe'
-      });
-    }
+					});
 
-/* 13. counterUp*/
-    $('.counter').counterUp({
-      delay: 10,
-      time: 3000
-    });
+			};
 
-/* 14. Datepicker */
-  $('#datepicker1').datepicker();
+			off = function() {
 
-// 15. Time Picker
-  $('#timepicker').timepicker();
+				$bg
+					.addClass('fixed')
+					.css('transform', 'none');
 
-//16. Overlay
-  $(".snake").snakeify({
-    speed: 200
-  });
+				$window
+					.off('scroll._parallax');
 
+			};
 
-//17.  Progress barfiller
+			// Disable parallax on ..
+				if (browser.name == 'ie'			// IE
+				||	browser.name == 'edge'			// Edge
+				||	window.devicePixelRatio > 1		// Retina/HiDPI (= poor performance)
+				||	browser.mobile)					// Mobile devices
+					off();
 
-  $('#bar1').barfiller();
-  $('#bar2').barfiller();
-  $('#bar3').barfiller();
-  $('#bar4').barfiller();
-  $('#bar5').barfiller();
-  $('#bar6').barfiller();
+			// Enable everywhere else.
+				else {
+
+					breakpoints.on('>large', on);
+					breakpoints.on('<=large', off);
+
+				}
+
+		});
+
+		$window
+			.off('load._parallax resize._parallax')
+			.on('load._parallax resize._parallax', function() {
+				$window.trigger('scroll');
+			});
+
+		return $(this);
+
+	};
+
+	// Play initial animations on page load.
+		$window.on('load', function() {
+			window.setTimeout(function() {
+				$body.removeClass('is-preload');
+			}, 100);
+		});
+
+	// Scrolly.
+		$('.scrolly').scrolly();
+
+	// Background.
+		$wrapper._parallax(0.925);
+
+	// Nav Panel.
+
+		// Toggle.
+			$navPanelToggle = $(
+				'<a href="#navPanel" id="navPanelToggle">Menu</a>'
+			)
+				.appendTo($wrapper);
+
+			// Change toggle styling once we've scrolled past the header.
+				$header.scrollex({
+					bottom: '5vh',
+					enter: function() {
+						$navPanelToggle.removeClass('alt');
+					},
+					leave: function() {
+						$navPanelToggle.addClass('alt');
+					}
+				});
+
+		// Panel.
+			$navPanel = $(
+				'<div id="navPanel">' +
+					'<nav>' +
+					'</nav>' +
+					'<a href="#navPanel" class="close"></a>' +
+				'</div>'
+			)
+				.appendTo($body)
+				.panel({
+					delay: 500,
+					hideOnClick: true,
+					hideOnSwipe: true,
+					resetScroll: true,
+					resetForms: true,
+					side: 'right',
+					target: $body,
+					visibleClass: 'is-navPanel-visible'
+				});
+
+			// Get inner.
+				$navPanelInner = $navPanel.children('nav');
+
+			// Move nav content on breakpoint change.
+				var $navContent = $nav.children();
+
+				breakpoints.on('>medium', function() {
+
+					// NavPanel -> Nav.
+						$navContent.appendTo($nav);
+
+					// Flip icon classes.
+						$nav.find('.icons, .icon')
+							.removeClass('alt');
+
+				});
+
+				breakpoints.on('<=medium', function() {
+
+					// Nav -> NavPanel.
+						$navContent.appendTo($navPanelInner);
+
+					// Flip icon classes.
+						$navPanelInner.find('.icons, .icon')
+							.addClass('alt');
+
+				});
+
+			// Hack: Disable transitions on WP.
+				if (browser.os == 'wp'
+				&&	browser.osVersion < 10)
+					$navPanel
+						.css('transition', 'none');
+
+	// Intro.
+		var $intro = $('#intro');
+
+		if ($intro.length > 0) {
+
+			// Hack: Fix flex min-height on IE.
+				if (browser.name == 'ie') {
+					$window.on('resize.ie-intro-fix', function() {
+
+						var h = $intro.height();
+
+						if (h > $window.height())
+							$intro.css('height', 'auto');
+						else
+							$intro.css('height', h);
+
+					}).trigger('resize.ie-intro-fix');
+				}
+
+			// Hide intro on scroll (> small).
+				breakpoints.on('>small', function() {
+
+					$main.unscrollex();
+
+					$main.scrollex({
+						mode: 'bottom',
+						top: '25vh',
+						bottom: '-50vh',
+						enter: function() {
+							$intro.addClass('hidden');
+						},
+						leave: function() {
+							$intro.removeClass('hidden');
+						}
+					});
+
+				});
+
+			// Hide intro on scroll (<= small).
+				breakpoints.on('<=small', function() {
+
+					$main.unscrollex();
+
+					$main.scrollex({
+						mode: 'middle',
+						top: '15vh',
+						bottom: '-15vh',
+						enter: function() {
+							$intro.addClass('hidden');
+						},
+						leave: function() {
+							$intro.removeClass('hidden');
+						}
+					});
+
+			});
+
+		}
 
 })(jQuery);

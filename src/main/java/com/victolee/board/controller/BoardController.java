@@ -49,7 +49,7 @@ public class BoardController {
     public String write(BoardDto boardDto) {
         boardService.savePost(boardDto);
 
-        return "redirect:/";
+        return "redirect:/board/list";
     }
 
 
@@ -66,7 +66,7 @@ public class BoardController {
     public String update(BoardDto boardDTO) {
         boardService.savePost(boardDTO);
 
-        return "redirect:/";
+        return "redirect:/board/list";
     }
 
     /* 게시글 삭제 */
@@ -74,7 +74,7 @@ public class BoardController {
     public String delete(@PathVariable("no") Long no) {
         boardService.deletePost(no);
 
-        return "redirect:/";
+        return "redirect:/board/list";
     }
 
     @GetMapping("/board/search")

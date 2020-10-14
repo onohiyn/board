@@ -10,9 +10,9 @@
     <!-- HEADER -->
     <div th:insert="common/header.html" id="header"></div>
 
-    <a th:href="@{/post}">글쓰기</a>
 
-    <table>
+
+    <table class="type09">
         <thead>
         <tr>
             <th class="one wide">번호</th>
@@ -44,6 +44,8 @@
         </tbody>
     </table>
 
+
+
     <div>
         <span th:each="pageNum : ${pageList}" th:inline="text">
             <a th:href="@{'/?page=' + ${pageNum}}">[[${pageNum}]]</a>
@@ -51,14 +53,15 @@
     </div>
 
     <hr>
-
+    <div>
+        <button type="button" onclick= "location.href='/post'">글쓰기</button>
+    </div>
     <!-- 검색 form -->
     <form action="/board/search" method="GET">
         <div>
             <input name="keyword" type="text" placeholder="검색어를 입력해주세요">
-        </div>
-
         <button>검색하기</button>
+        </div>
     </form>
 
     <!-- FOOTER -->
